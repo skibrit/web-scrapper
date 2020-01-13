@@ -1,0 +1,9 @@
+{
+  "mongoURI": "mongodb://localhost:27017/dbhitloom",
+  "jwtSecret": "universe",
+  "scrapeUrl": {
+    "florida": "https://www.floridahealthfinder.gov/facilitylocator/FacilitySearch.aspx",
+    "texas": "https://apps.hhs.texas.gov/LTCSearch/",
+    "texasProperty": "https://apps.hhs.texas.gov/LTCSearch/"
+  }
+}
