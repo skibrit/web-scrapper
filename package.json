@@ -12,7 +12,8 @@
     "babel:run": "babel-node ./src/server",
     "babel:build": "babel src --out-dir dist",
     "clean": "rimraf dist",
-    "debug": "nodemon --config config/nodemon.config --inspect ./src/server"
+    "debug": "nodemon --config config/nodemon.config --inspect ./src/server",
+    "client": "cd src/client && npm start"
   },
   "author": "Saidul Amin",
   "license": "ISC",

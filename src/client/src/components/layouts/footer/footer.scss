@@ -1,0 +1,17 @@
+@import "../../../../assets/styles/variables";
+
+.footer-section {
+  margin-top: 25px;
+  background-color: $secondary_bg;
+  padding: 35px 0px;
+  border-top: 1px solid $borderColor;
+
+  .f-content {
+    font-size: 18px;
+    margin: 0px;
+    font-weight: 500;
+    span {
+      color: $secondaryColor;
+    }
+  }
+}

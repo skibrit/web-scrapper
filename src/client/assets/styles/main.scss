@@ -1,0 +1,40 @@
+@import "./variables";
+
+.wrapper {
+  min-height: 100vh;
+  padding: 30px 0px;
+
+  .main-title-wrapper {
+    padding: 35px 0px;
+    .main-title {
+      margin: 0;
+      font-size: 30px;
+      font-weight: bold;
+      color: $secondaryColor;
+    }
+  }
+
+  .form-control,
+  .custom-select {
+    background-color: $secondary_bg;
+    border: 1px solid $borderColor;
+    color: $fontColor;
+  }
+
+  .inline-form {
+    .btn-primary {
+      margin-top: -3px;
+    }
+  }
+
+  .btn-primary {
+    background-color: darken($color: $secondary_bg, $amount: 10%);
+    border: 1px ridge $borderColor;
+    color: $primaryColor;
+    padding: 10px 12px;
+
+    &:hover {
+      background-color: $secondary_bg;
+    }
+  }
+}
