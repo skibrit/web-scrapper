@@ -1,0 +1,32 @@
+@import "../../../../assets/styles/variables";
+
+.alert-box {
+  background-color: #34344a;
+  padding: 15px 30px;
+  border: 2px solid #c89b7b;
+  position: relative;
+  .alert-body {
+    font-size: 16px;
+
+    .error-body {
+      color: $secondaryColor;
+    }
+    .info-body {
+      color: $primaryColor;
+    }
+  }
+  .alert-body:after {
+    content: '\0200B';
+  }
+  .alert-close-btn {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    color: #cc5a71;
+    font-size: 20px;
+    cursor: pointer;
+    &:hover {
+      color: lighten(#cc5a71, 10%);
+    }
+  }
+}

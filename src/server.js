@@ -3,7 +3,9 @@ import path from "path";
 import RouteList from "./routeList";
 import expressStaticGzip from "express-static-gzip";
 import cors from "cors";
+import bodyParser from "body-parser";
 import createError from "http-errors";
+import DbConnecter from "./models/DbConnecter";
 const logger = require("morgan");
 
 const PORT = process.env.PORT || 12000;
@@ -13,11 +15,16 @@ const app = express();
 app.use(logger("dev"));
 app.use(express.json({ limit: "100mb" }));
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
+//create a connection to the database
+DbConnecter();
+
 //routes
-app.use("/asset", RouteList.Asset);
-app.use("/property", RouteList.Property);
+app.use("/api/asset", RouteList.Asset);
+app.use("/api/property", RouteList.Property);
 
 console.log(`Environment is ${NODE_ENV}`);
 
@@ -48,7 +55,6 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.json({ err });
-  // res.render("error");
 });
 
 app.listen(PORT, () => {

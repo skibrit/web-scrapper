@@ -2,5 +2,34 @@
 
 .admin-panel {
   .admin-panel-content-wrapper {
+    .scrape-result-wrapper {
+      margin-top: 35px;
+    }
+    .r-row {
+      background-color: $secondary_bg;
+      padding: 25px;
+      @include box_shadow();
+
+      .main-title-wrapper {
+        padding-top: 0px;
+      }
+    }
+    .scrape-form {
+    }
+    .scrape-result-row {
+      margin-bottom: 35px;
+      position: relative;
+    }
+    .remove-btn {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      color: $secondaryColor;
+      cursor: pointer;
+      font-size: 20px;
+      &:hover {
+        color: darken($color: $secondaryColor, $amount: 10%);
+      }
+    }
   }
 }

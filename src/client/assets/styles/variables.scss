@@ -5,3 +5,15 @@ $primaryColor: #84dcc6;
 $secondaryColor: #d16666;
 $brandColor: lighten($primaryColor, 5%);
 $borderColor: rgba($primaryColor, 0.5);
+
+@mixin box_shadow() {
+  -webkit-box-shadow: 5px 7px 24px -1px rgba(0, 0, 0, 1);
+  -moz-box-shadow: 5px 7px 24px -1px rgba(0, 0, 0, 1);
+  box-shadow: 5px 7px 24px -1px rgb(21, 2, 22);
+}
+
+@mixin border_radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
