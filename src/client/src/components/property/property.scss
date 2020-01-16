@@ -1,0 +1,59 @@
+@import "../../assets/styles/variables";
+
+.property-page-wrapper {
+  .property-image-slider {
+    height: auto;
+    background-color: $secondary_bg;
+  }
+  .property-content-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 20px;
+  }
+  .location-map-wrapper {
+    width: 350px;
+    height: 300px;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+  .property-detail-wrapper {
+    flex-grow: 1;
+    height: auto;
+    margin-right: 20px;
+
+    .property-info-wrapper {
+      margin-top: 10px;
+      .property-info-row {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        padding: 10px 0px;
+      }
+      .p-label-col {
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: 150px;
+        font-weight: bold;
+        color: $primaryColor;
+      }
+      .p-value-col {
+        flex-grow: 1;
+        position: relative;
+        top: 4px;
+      }
+    }
+  }
+  @media (max-width: 750px) {
+    .property-content-wrapper {
+      flex-wrap: wrap;
+    }
+    .property-detail-wrapper {
+      margin-right: 0px;
+    }
+    .location-map-wrapper {
+      width: 100%;
+      margin-top: 20px;
+    }
+  }
+}

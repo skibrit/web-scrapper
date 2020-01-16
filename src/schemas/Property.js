@@ -9,8 +9,7 @@ const PropertySchema = mongoose.Schema(
     },
     name: {
       type: String,
-      required: true,
-      unique: true
+      required: true
     },
     address: {
       type: String,
@@ -41,6 +40,14 @@ const PropertySchema = mongoose.Schema(
       required: true
     },
     state: {
+      type: String,
+      required: true
+    },
+    latitude: {
+      type: String,
+      required: true
+    },
+    longitude: {
       type: String,
       required: true
     },

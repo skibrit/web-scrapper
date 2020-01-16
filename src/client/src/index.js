@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import Store from "./store";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "jquery/dist/jquery.min.js";
+import "bootstrap/js/src/collapse.js";
 import "./index.scss";
 import App from "./App";
 import { transitions, positions, Provider as AlertProvider } from "react-alert";

@@ -1,4 +1,8 @@
 // actions events
 export const SCRAPE_DONE = "SCRAPE_DONE";
 export const RESET_SCRAPER = "RESET_SCRAPER";
-export const REMOVE_PROPERTY = "REMOVE_PROPERTY_SLOT";
+export const REMOVE_PROPERTY = "REMOVE_PROPERTY";
+export const SEARCH_RESULT = "SEARCH_RESULT";
+export const PROPERTY_LOADED = "PROPERTY_LOADED";
+export const PROPERTY_NOT_FOUND = "PROPERTY_NOT_FOUND";
+export const RESET_PROPERTY = "RESET_PROPERTY";

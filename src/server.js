@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+
 import RouteList from "./routeList";
 import expressStaticGzip from "express-static-gzip";
 import cors from "cors";
@@ -23,14 +24,13 @@ app.use(cors());
 DbConnecter();
 
 //routes
-app.use("/api/asset", RouteList.Asset);
 app.use("/api/property", RouteList.Property);
 
 console.log(`Environment is ${NODE_ENV}`);
 
 if (NODE_ENV == "production") {
   app.use(
-    expressStaticGzip(path.resolve(__dirname, "../../dist"), {
+    expressStaticGzip(path.resolve(__dirname, "./client/build/"), {
       enableBrotli: true,
       customCompressions: [
         {
@@ -41,6 +41,9 @@ if (NODE_ENV == "production") {
       orderPreference: ["br"]
     })
   );
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "./client/build/index.html"));
+  });
 }
 
 app.use(function(req, res, next) {

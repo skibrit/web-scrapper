@@ -6,14 +6,16 @@
   "scripts": {
     "start": "npm run prod",
     "watch": "nodemon --config ./config/nodemon.config.json",
-    "prod": "cross-env NODE_ENV=production npm-run-all clean babel:build server:prod",
+    "prod": "cross-env NODE_ENV=production npm-run-all babel:run",
     "dev": "cross-env NODE_ENV=development npm-run-all babel:run",
     "server:prod": "node ./dist/server",
     "babel:run": "babel-node ./src/server",
-    "babel:build": "babel src --out-dir dist",
+    "babel:build": "babel src/server.js --out-dir dist",
+    "build": "npm-run-all clean babel:build",
     "clean": "rimraf dist",
     "debug": "nodemon --config config/nodemon.config --inspect ./src/server",
-    "client": "cd src/client && npm start"
+    "client": "cd src/client && npm start",
+    "pm2": "pm2 start config/pm2.process.config.js --env production"
   },
   "author": "Saidul Amin",
   "license": "ISC",
@@ -33,6 +35,7 @@
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
+    "node-geocoder": "^3.25.0",
     "puppeteer": "^2.0.0"
   },
   "devDependencies": {

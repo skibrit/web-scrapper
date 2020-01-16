@@ -10,5 +10,8 @@
     "accessKeyId": "AKIA3M6SOSGLNJMXEOOF",
     "secretAccessKey": "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",
     "bucket": "skibrit"
+  },
+  "google": {
+    "apiKey": "AIzaSyBRnheh2weuh_Loi-UiILT7Sbwucg-zPls"
   }
 }

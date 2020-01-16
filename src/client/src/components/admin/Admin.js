@@ -1,16 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Fragment } from "react";
 import PropertyForm from "./PropertyForm";
+import Loader from "../layouts/Loader/Loader";
 import { connect } from "react-redux";
-import { scrapeProperty, saveProperty } from "../../actions/admin";
+import { scrapeProperty, clearResult } from "../../actions/admin";
 import { useAlert } from "react-alert";
 import "./admin.scss";
 
-const Admin = ({ scrapeProperty, admin: { scrapeResult }, saveProperty }) => {
-  const fileChooser = useRef();
+const Admin = ({ scrapeProperty, admin: { scrapeResult }, clearResult }) => {
   const alert = useAlert();
+
+  const [isLoading, setLoadingState] = useState(false);
+
   const [formData, setFormData] = useState({
-    state: "texas",
-    name: "The Isle At Watermere"
+    state: "",
+    name: ""
   });
   const { state, name } = formData;
 
@@ -20,17 +23,18 @@ const Admin = ({ scrapeProperty, admin: { scrapeResult }, saveProperty }) => {
   const onSubmit = async e => {
     try {
       e.preventDefault();
-
-      //  const files = fileChooser.current.files;
-      // console.log(files);
-
-      // await saveProperty(files);
-
+      if (isLoading) {
+        alert.show("A request is in progress Have Patience", { type: "error" });
+        return;
+      }
+      clearResult();
+      setLoadingState(true);
       if (state == "" || name == "") throw "Please fill all the field";
       let response = await scrapeProperty(state, name.trim());
-      alert.show("Scrape Done");
+      setLoadingState(false);
     } catch (error) {
       console.log(error);
+      setLoadingState(false);
       alert.show(error, { type: "error" });
     }
   };
@@ -72,7 +76,13 @@ const Admin = ({ scrapeProperty, admin: { scrapeResult }, saveProperty }) => {
                   </select>
                 </div>
                 <div className="col">
-                  <button className="btn btn-primary">Scrape Data</button>
+                  <button className="btn btn-primary">
+                    {!isLoading
+                      ? "Scrape Data"
+                      : <Fragment>
+                          Processing <Loader type="button" />
+                        </Fragment>}
+                  </button>
                 </div>
               </div>
             </form>
@@ -95,7 +105,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   scrapeProperty,
-  saveProperty
+  clearResult
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);

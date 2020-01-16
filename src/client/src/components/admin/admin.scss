@@ -1,19 +1,11 @@
-@import "../../../assets/styles/variables";
+@import "../../assets/styles/variables";
 
 .admin-panel {
   .admin-panel-content-wrapper {
     .scrape-result-wrapper {
       margin-top: 35px;
     }
-    .r-row {
-      background-color: $secondary_bg;
-      padding: 25px;
-      @include box_shadow();
 
-      .main-title-wrapper {
-        padding-top: 0px;
-      }
-    }
     .scrape-form {
     }
     .scrape-result-row {

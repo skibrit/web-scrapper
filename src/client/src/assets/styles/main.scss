@@ -1,0 +1,111 @@
+@import "./variables";
+
+.wrapper {
+  min-height: 100vh;
+  padding: 30px 0px;
+
+  .main-title-wrapper {
+    padding: 15px 0px;
+    .main-title {
+      margin: 0;
+      font-size: 28px;
+      font-weight: bold;
+      color: $secondaryColor;
+    }
+  }
+
+  .r-row {
+    background-color: $secondary_bg;
+    padding: 25px;
+    @include box_shadow();
+    border: 1px solid $borderColor;
+
+    .main-title-wrapper {
+      padding-top: 0px;
+    }
+  }
+
+  .table-wrapper {
+    overflow: auto;
+  }
+
+  .table {
+    min-width: 700px;
+  }
+
+  .table-dark {
+    background-color: darken($secondary_bg, 5%);
+  }
+  .table thead th {
+    color: $secondaryColor;
+  }
+  .table td {
+    vertical-align: middle;
+  }
+
+  .td-btn-col {
+    .btn {
+      margin-right: 10px;
+    }
+  }
+
+  .form-control,
+  .custom-select,
+  .custom-file-label,
+  .custom-file-label:after {
+    background-color: $secondary_bg;
+    border: 1px solid $borderColor;
+    color: $fontColor;
+    outline: none;
+  }
+
+  .inline-form {
+    .btn-primary {
+      margin-top: -3px;
+    }
+  }
+
+  .btn {
+    position: relative;
+  }
+
+  .btn-primary {
+    background-color: darken($color: $secondary_bg, $amount: 10%);
+    border: 1px ridge $borderColor;
+    color: $primaryColor;
+    padding: 10px 12px;
+
+    &:hover {
+      background-color: $secondary_bg;
+    }
+  }
+
+  .default-div {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .default-text {
+      font-size: 30px;
+      color: $secondaryColor;
+    }
+  }
+}
+@media (max-width: 990px) {
+  .container {
+    max-width: 100%;
+  }
+  .property-image-slider-wrapper {
+    padding: 10px !important;
+  }
+}
+
+@media (max-width: 550px) {
+  .inline-form {
+    .col {
+      min-width: 100%;
+      margin-bottom: 15px;
+    }
+  }
+}

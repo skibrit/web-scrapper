@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, Fragment } from "react";
 import { connect } from "react-redux";
+import Loader from "../layouts/Loader/Loader";
 import { removeProperty, saveProperty } from "../../actions/admin";
 import { useAlert } from "react-alert";
 import "./admin.scss";
@@ -17,19 +18,28 @@ const PropertyForm = ({ data, removeProperty, saveProperty }) => {
     capacity,
     country
   } = data;
-  const fileChooser = useRef();
 
+  const fileChooser = useRef();
   const alert = useAlert();
   const [fileSelected, setFileSelected] = useState(0);
+  const [isLoading, setLoadingState] = useState(false);
 
   const onSubmit = async e => {
     try {
       e.preventDefault();
+      if (isLoading) {
+        alert.show("A request is in progress Have Patience", { type: "error" });
+        return;
+      }
+      setLoadingState(true);
       const files = fileChooser.current.files;
+      if (files.length <= 0) throw "Please attach atleast one image";
       let response = await saveProperty(data, files);
+      setLoadingState(false);
       alert.show(response);
     } catch (error) {
       console.log(error);
+      setLoadingState(false);
       alert.show(error, { type: "error" });
     }
   };
@@ -101,7 +111,7 @@ const PropertyForm = ({ data, removeProperty, saveProperty }) => {
               disabled
             />
           </div>
-          <div class="form-group col-md-2">
+          <div className="form-group col-md-2">
             <label htmlFor="inputZip">Zip</label>
             <input
               type="text"
@@ -111,7 +121,7 @@ const PropertyForm = ({ data, removeProperty, saveProperty }) => {
               disabled
             />
           </div>
-          <div class="form-group col-md-2">
+          <div className="form-group col-md-2">
             <label htmlFor="inputCountry">Country</label>
             <input
               type="text"
@@ -121,7 +131,7 @@ const PropertyForm = ({ data, removeProperty, saveProperty }) => {
               disabled
             />
           </div>
-          <div class="form-group col-md-2">
+          <div className="form-group col-md-2">
             <label htmlFor="inputCapacity">Capacity</label>
             <input
               type="text"
@@ -131,7 +141,7 @@ const PropertyForm = ({ data, removeProperty, saveProperty }) => {
               disabled
             />
           </div>
-          <div class="form-group col-md-2">
+          <div className="form-group col-md-2">
             <label htmlFor="inputType">Type</label>
             <input
               type="text"
@@ -141,7 +151,7 @@ const PropertyForm = ({ data, removeProperty, saveProperty }) => {
               disabled
             />
           </div>
-          <div class="form-group col-md-12">
+          <div className="form-group col-md-12">
             <label htmlFor="inputCapacity">Images</label>
             <div className="custom-file">
               <input
@@ -162,8 +172,12 @@ const PropertyForm = ({ data, removeProperty, saveProperty }) => {
             </div>
           </div>
         </div>
-        <button type="submit" className="btn btn-primary">
-          Save Data
+        <button className="btn btn-primary">
+          {!isLoading
+            ? "Save Data"
+            : <Fragment>
+                Processing <Loader type="button" />
+              </Fragment>}
         </button>
       </form>
     </div>

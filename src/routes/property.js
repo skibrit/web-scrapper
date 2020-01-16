@@ -7,11 +7,13 @@ import Multer from "multer";
 import aws from "aws-sdk";
 import MulterS3 from "multer-s3";
 import path from "path";
+import { convertAddressToGeoCode } from "../utils/GeoMap";
 const { validationResult, check } = require("express-validator");
 const router = express.Router();
 
 const scrapeUrl = config.get("scrapeUrl");
 const awsConfig = config.get("aws");
+const google = config.get("google");
 
 // @ROUTE : GET api/property
 // @DESC  : This route will return all the user in the database. Default sort is desc
@@ -35,13 +37,42 @@ router.get("/:code", async (req, res) => {
     if (!code) {
       return res.status(404).send("Not found");
     }
+    console.log("entered");
     const property = await Property.findOne({ _id: code });
-    res.json(property);
-  } catch (err) {
-    console.log(err.message);
-    if (err.kind("ObjectId")) {
+    if (!property) {
       return res.status(404).send("Not found");
     }
+    res.json({ property, apiKey: google.apiKey });
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind == "ObjectId") {
+      return res.status(404).send("Not found");
+    }
+    return res.status(500).send("Server error");
+  }
+});
+
+// @ROUTE : GET api/property/search
+// @DESC  : This route will return all the user in the database. Default sort is desc
+// @Access : Public
+
+let validationRules = [
+  check("searchTerm", "Search Term is required").not().isEmpty()
+];
+router.post("/search", validationRules, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  try {
+    const { searchTerm } = req.body;
+    const reges = new RegExp(`^${searchTerm}$`, "i");
+    const property = await Property.find({
+      $or: [{ name: reges }, { city: reges }, { state: reges }]
+    });
+    res.json(property);
+  } catch (err) {
+    console.log(err);
     return res.status(500).send("Server error");
   }
 });
@@ -50,7 +81,7 @@ router.get("/:code", async (req, res) => {
 // @DESC  : This route will return all the user in the database. Default sort is desc
 // @Access : Public
 
-let validationRules = [
+validationRules = [
   check("state", "State is required").not().isEmpty(),
   check("name", "Name is required").not().isEmpty()
 ];
@@ -200,6 +231,7 @@ router.post("/scrape", [validationRules], async (req, res) => {
         }
       }
     }
+
     res.json(finalPropertyList);
   } catch (error) {
     console.log(error);
@@ -228,24 +260,6 @@ const s3 = new aws.S3({
   secretAccessKey: awsConfig.secretAccessKey,
   bucket: awsConfig.bucket
 });
-//const storage = Multer.memoryStorage();
-//const upload = Multer({ storage: storage });
-/*
-var upload = Multer({
-  storage: MulterS3({
-    s3: s3,
-    bucket: awsConfig.bucket,
-    acl: "public-read",
-    ContentDisposition: "inline",
-    contentType: MulterS3.AUTO_CONTENT_TYPE,
-    metadata: function(req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
-    },
-    key: function(req, file, cb) {
-      cb(null, Date.now().toString() + ".jpg");
-    }
-  })
-});*/
 
 function checkFileType(file, cb) {
   // Allowed ext
@@ -279,66 +293,75 @@ const upload = Multer({
   }
 });
 
-router.post("/save", [upload.array("files")], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  try {
-    console.log(req.body);
-    const uploadedImages = req.files;
-    console.log(req.body);
-    const {
-      name,
-      code,
-      address,
-      city,
-      phone,
-      type,
-      capacity,
-      state,
-      zipCode,
-      country
-    } = req.body;
-
-    let propertyExist = await Property.findOne({ code, state });
-    if (propertyExist) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "This property has already been saved" }] });
+router.post(
+  "/save",
+  [upload.array("files"), validationRules],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-    const property = new Property({
-      name,
-      code,
-      address,
-      city,
-      phone,
-      type,
-      capacity,
-      state,
-      zipCode,
-      country
-    });
+    try {
+      console.log(req.body);
+      const uploadedImages = req.files;
+      console.log(req.body);
+      const {
+        name,
+        code,
+        address,
+        city,
+        phone,
+        type,
+        capacity,
+        state,
+        zipCode,
+        country
+      } = req.body;
 
-    const imageFiles = [];
-
-    for (let im of uploadedImages) {
-      imageFiles.push({
-        key: im.key,
-        url: im.location
+      let propertyExist = await Property.findOne({ code, state });
+      if (propertyExist) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "This property has already been saved" }] });
+      }
+      const property = new Property({
+        name,
+        code,
+        address,
+        city,
+        phone,
+        type,
+        capacity,
+        state,
+        zipCode,
+        country
       });
+
+      const imageFiles = [];
+
+      for (let im of uploadedImages) {
+        imageFiles.push({
+          key: im.key,
+          url: im.location
+        });
+      }
+
+      property.images = imageFiles;
+
+      const { latitude, longitude } = await convertAddressToGeoCode(address);
+
+      property.latitude = latitude;
+      property.longitude = longitude;
+
+      await property.save();
+
+      res.json({ msg: "Property has been saved successfully" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Server error");
     }
-
-    property.images = imageFiles;
-
-    await property.save();
-
-    res.json({ msg: "Property has been saved successfully" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Server error");
   }
-});
+);
 
 router.post("/upload", [upload.array("files")], async (req, res) => {
   try {

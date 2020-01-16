@@ -1,2 +1,6 @@
-@import "../assets/styles/main";
-@import "../assets//styles/variables.scss";
+@import "./assets/styles/main";
+@import "./assets/styles/variables.scss";
+
+.container-box {
+  min-height: 100vh;
+}

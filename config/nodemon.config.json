@@ -1,6 +1,6 @@
 {
   "exec": "npm run dev",
   "verbose": true,
-  "ignore": ["node_modules", "browser"],
+  "ignore": ["node_modules", "browser", "client/"],
   "signal": "SIGINT"
 }

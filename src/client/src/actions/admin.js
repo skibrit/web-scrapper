@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SCRAPE_DONE, REMOVE_PROPERTY } from "../constants";
+import { SCRAPE_DONE, REMOVE_PROPERTY, RESET_SCRAPER } from "../constants";
 import { extractError } from "../models/ErrorHandler";
 
 export const scrapeProperty = (state, name) => dispatch => {
@@ -12,7 +12,6 @@ export const scrapeProperty = (state, name) => dispatch => {
       };
       const body = { state, name };
       let response = await axios.post(`/api/property/scrape`, body, config);
-      console.log(response.data);
       dispatch({
         type: SCRAPE_DONE,
         payload: response.data
@@ -27,8 +26,6 @@ export const scrapeProperty = (state, name) => dispatch => {
 export const saveProperty = (formData, photos) => dispatch => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log(formData);
-
       const config = {
         headers: {
           "Content-Type": "multipart/form-data"
@@ -69,6 +66,9 @@ export const saveProperty = (formData, photos) => dispatch => {
         config
       );
       console.log(response.data);
+
+      dispatch(removeProperty(code));
+
       resolve(response.data.msg);
     } catch (error) {
       reject(extractError(error));
@@ -85,4 +85,11 @@ export const removeProperty = code => dispatch => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const clearResult = () => dispatch => {
+  dispatch({
+    type: RESET_SCRAPER,
+    payload: []
+  });
 };

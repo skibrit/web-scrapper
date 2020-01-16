@@ -1,4 +1,3 @@
 module.exports = {
-  Property: require("./routes/property"),
-  Asset: require("./routes/asset")
+  Property: require("./routes/property")
 };
