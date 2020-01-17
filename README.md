@@ -16,12 +16,12 @@ User can search property by name/state/city. If any result found those result wi
 
 This application has been developed using 
 
-node.js , express for the backend
-react.js for the frontend
-mongodb as database
-amazon s3 for storage
+#### node.js , express for the backend
+#### react.js for the frontend
+#### mongodb as database
+#### amazon s3 for storage
 
-has been deployed on an aws s3 instance
+It has been deployed on an aws s3 instance
 
  [Live Link](http://ec2-52-77-238-99.ap-southeast-1.compute.amazonaws.com)
 
