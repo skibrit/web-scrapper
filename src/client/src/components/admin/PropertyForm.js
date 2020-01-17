@@ -137,7 +137,7 @@ const PropertyForm = ({ data, removeProperty, saveProperty }) => {
               type="text"
               className="form-control"
               id="inputCapacity"
-              value={capacity}
+              value={capacity ? capacity : 0}
               disabled
             />
           </div>
