@@ -7,12 +7,12 @@ There are mainly two features in the front end.
 
 ### Feature One:
 
-User can scrape new property by name/state. If any result found individual property will be displayed as individual form in the front end. User then can attach photos and save those data into the database. Though scraped detail can't be modified in the form.
+Users can scrape new property by name/state. If any result found individual property will be displayed as an individual form in the front end. The user then can attach photos and save those data into the database. Though scraped detail can't be modified in the form.
 
 
 ### Feature Two:
 
-User can search property by name/state/city. If any result found those result will be displayed in a table. User can view each property detail in the details page.
+Users can search property by name/state/city. If any result found those results will be displayed in a table. Users can view each property detail on the details page.
 
 This application has been developed using 
 
