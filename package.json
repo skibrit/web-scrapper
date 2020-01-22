@@ -15,7 +15,8 @@
     "clean": "rimraf dist",
     "debug": "nodemon --config config/nodemon.config --inspect ./src/server",
     "client": "cd src/client && npm start",
-    "pm2": "pm2 start config/pm2.process.config.js --env production"
+    "pm2": "pm2 start config/pm2.process.config.js --env production",
+    "client-build": "cd src/client && npm run build"
   },
   "author": "Saidul Amin",
   "license": "ISC",
