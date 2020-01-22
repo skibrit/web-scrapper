@@ -4,8 +4,6 @@ image: node:latest
       - build
 
     build_app:
-      only:
-          - master
       stage: build
       script:
         - echo "Building Application"
